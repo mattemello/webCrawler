@@ -1,0 +1,26 @@
+{
+  "name": "webcrawler",
+  "version": "1.0.0",
+  "description": "a web crawler software",
+  "main": "index.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matteomassimello/webCrawler.git"
+  },
+  "author": "Matteo Massimello",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matteomassimello/webCrawler/issues"
+  },
+  "homepage": "https://github.com/matteomassimello/webCrawler#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "jsdom": "^24.0.0"
+  }
+}
