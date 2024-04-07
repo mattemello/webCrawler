@@ -14,7 +14,7 @@ const { JSDOM } = require('jsdom')
 
 const getURLsFromHTML = (htmlBody, baseURL) =>{
     const dom = new JSDOM(htmlBody, {includeNodeLocations: true})
-   
+
     let primeURL = dom.window.document.querySelectorAll("a")
     let allURL = []
     for (let i = 0; i < primeURL.length; i++) {
@@ -29,20 +29,25 @@ const getURLsFromHTML = (htmlBody, baseURL) =>{
 
 }
 
+let pages = {
+    page: [],
+    num: []
+}
 
-const crawlPage = (currenURL) => {
-    let htmlPage
+async function crawlPage  (currenURL)  {
+    let fetchPage
     try{
-        htmlPage = fetch(currenURL)
 
-        if(htmlPage == null){
-            throw ("errore")
-        }
+        fetchPage = await fetch(currenURL)
 
+        if(!fetchPage.ok)
+            throw new Error('Error in request')
+
+        let htmlPage = await fetchPage.text()
         console.log(htmlPage)
 
     }catch(err){
-        console.error(err)
+        console.error("Error occured: ", err)
     }
 
 
