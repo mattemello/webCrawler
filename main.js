@@ -1,5 +1,10 @@
 const { argv } = require('node:process')
-const { crawlPage } = require('./crawl')
+const { crawlPage, normalizeURL } = require('./crawl')
+
+let pages = {
+    page: [],
+    num: []
+}
 
 const main = () => {
     if(argv.length != 3){
@@ -9,7 +14,8 @@ const main = () => {
 
     console.log("> arg thake")
     console.log("> start the process")
-    crawlPage(argv[2])
+    const baseURL = normalizeURL(argv[2])
+    crawlPage(baseURL, argv[2], pages)
 }
 
 main()

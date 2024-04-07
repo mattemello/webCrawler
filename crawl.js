@@ -29,25 +29,56 @@ const getURLsFromHTML = (htmlBody, baseURL) =>{
 
 }
 
-let pages = {
+/*let pages = {
     page: [],
     num: []
-}
+}*/
 
-async function crawlPage  (currenURL)  {
-    let fetchPage
-    try{
+async function crawlPage  (baseURL, currenURL, pages)  {
+    currenURL = normalizeURL(currenURL)
 
-        fetchPage = await fetch(currenURL)
+    if(!currenURL.includes(baseURL)){
+        return;
+    }
 
-        if(!fetchPage.ok)
+    let oldURL = false
+
+    for(let i = 0; i < pages.page.length; i++){
+        if(pages.page[i] == currenURL){
+            pages.num[i] += 1
+            oldURL = true
+            break
+        }
+    }
+
+    if(!oldURL){
+        pages.page.push(currenURL)
+        pages.num.push(1)
+        console.log("> now we take the html page of ${ currenURL}")
+        let fetchPage, htmlPage
+        try{
+
+            fetchPage = await fetch(currenURL)
+
+            if(!fetchPage.ok)
             throw new Error('Error in request')
 
-        let htmlPage = await fetchPage.text()
-        console.log(htmlPage)
+            htmlPage = await fetchPage.text()
 
-    }catch(err){
-        console.error("Error occured: ", err)
+        }catch(err){
+            console.error("Error occured: ", err)
+        }
+
+        let allURL =  getURLsFromHTML(htmlPage)
+
+        for(let i = 0; i < allURL.length; i++){
+            return crawlPage(baseURL, allURL[i], pages)
+        }
+
+        return pages
+
+    }else{
+        return pages
     }
 
 
