@@ -1,5 +1,6 @@
 const { argv } = require('node:process')
 const { crawlPage, normalizeURL } = require('./crawl')
+const { printReport } = require('./report')
 
 let pages = {
     page: [],
@@ -15,7 +16,9 @@ const main = () => {
     console.log("> arg thake")
     console.log("> start the process")
     const baseURL = normalizeURL(argv[2])
-    crawlPage(baseURL, argv[2], pages)
+    pages = crawlPage(baseURL, argv[2], pages)
+    console.log("valore num pages ", pages.num, " valore pages: ", pages.page)
+    printReport(pages)
 }
 
 main()
