@@ -54,17 +54,18 @@ async function crawlPage  (baseURL, currenURL, pages)  {
     if(!oldURL){
         pages.page.push(currenURL)
         pages.num.push(1)
-        console.log("> now we take the html page of ${ currenURL} (prova ", pages.num)
+        console.log("> now we take the html page of ${currenURL} ")
         let htmlPage
         try{
-            console.log("curr: ", currenURL)
+
             const fetchPage = await fetch(currenURL)
 
             if(fetchPage.status > 399){
                 console.log("got http error: ", fetchPage.status)
                 return pages
             }
-            if((fetchPage.headers.get('content-type')).includes('text-content')){
+
+            if((fetchPage.header).includes('text-content')){
                 console.log("type not valid")
                 return pages
             }
@@ -76,7 +77,7 @@ async function crawlPage  (baseURL, currenURL, pages)  {
 
         console.log("> now we take the html page of ${ currenURL} (prova ", pages.num)
 
-        let allURL = await getURLsFromHTML(htmlPage)
+        let allURL = getURLsFromHTML(htmlPage)
 
         for(let i = 0; i < allURL.length; i++){
             pages = await crawlPage(baseURL, allURL[i], pages)

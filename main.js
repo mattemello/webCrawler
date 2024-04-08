@@ -16,7 +16,7 @@ const main = () => {
     console.log("> arg thake")
     console.log("> start the process")
     const baseURL = normalizeURL(argv[2])
-    pages = crawlPage(baseURL, argv[2], pages)
+    pages = await crawlPage(baseURL, argv[2], pages)
     console.log("valore num pages ", pages.num, " valore pages: ", pages.page)
     printReport(pages)
 }
