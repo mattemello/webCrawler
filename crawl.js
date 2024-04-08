@@ -76,7 +76,7 @@ async function crawlPage  (baseURL, currenURL, pages)  {
 
         console.log("> now we take the html page of ${ currenURL} (prova ", pages.num)
 
-        let allURL =  getURLsFromHTML(htmlPage)
+        let allURL = await getURLsFromHTML(htmlPage)
 
         for(let i = 0; i < allURL.length; i++){
             pages = await crawlPage(baseURL, allURL[i], pages)
