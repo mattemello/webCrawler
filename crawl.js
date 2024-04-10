@@ -1,4 +1,4 @@
-const normalizeURL = (theURL) =>{
+const normalizeURL = (theURL) => {
     let url = new URL(theURL);
     const dimProt = url.protocol.length + 2;
 
@@ -12,15 +12,15 @@ const normalizeURL = (theURL) =>{
 
 const { JSDOM } = require('jsdom')
 
-const getURLsFromHTML = (htmlBody, baseURL) =>{
-    const dom = new JSDOM(htmlBody, {includeNodeLocations: true})
+const getURLsFromHTML = (htmlBody, baseURL) => {
+    const dom = new JSDOM(htmlBody, { includeNodeLocations: true })
 
     let primeURL = dom.window.document.querySelectorAll("a")
     let allURL = []
     for (let i = 0; i < primeURL.length; i++) {
         if (primeURL[i].href.includes('https://') || primeURL[i].href.includes('https//')) {
             allURL[i] = primeURL[i].href;
-        }else{
+        } else {
             allURL[i] = baseURL + primeURL[i].href
         }
     }
@@ -34,59 +34,57 @@ const getURLsFromHTML = (htmlBody, baseURL) =>{
     num: []
 }*/
 
-async function crawlPage  (baseURL, currenURL, pages)  {
-    currenURL = normalizeURL(currenURL)
+async function crawlPage(baseURL, currenURL, pages) {
+//currenURL = normalizeURL(currenURL)
 
-    if(!currenURL.includes(baseURL)){
+    if (!currenURL.includes(baseURL)) {
         return;
     }
 
     let oldURL = false
 
-    for(let i = 0; i < pages.page.length; i++){
-        if(pages.page[i] == currenURL){
+    for (let i = 0; i < pages.page.length; i++) {
+        if (pages.page[i] == currenURL) {
             pages.num[i] += 1
             oldURL = true
             return pages
         }
     }
 
-    if(!oldURL){
+    if (!oldURL) {
         pages.page.push(currenURL)
         pages.num.push(1)
-        console.log("> now we take the html page of ${currenURL} ")
+        console.log("> now we take the html page of ", currenURL, " ")
         let htmlPage
-        try{
+        try {
 
             const fetchPage = await fetch(currenURL)
 
-            if(fetchPage.status > 399){
+            if (fetchPage.status > 399) {
                 console.log("got http error: ", fetchPage.status)
                 return pages
             }
 
-            if((fetchPage.header).includes('text-content')){
+            if ((fetchPage.header.).includes('text-content')) {
                 console.log("type not valid")
                 return pages
             }
             htmlPage = await fetchPage.text()
 
-        }catch(err){
+        } catch (err) {
             console.error("Error occured: ", err)
         }
 
-        console.log("> now we take the html page of ${ currenURL} (prova ", pages.num)
-
         let allURL = getURLsFromHTML(htmlPage)
-
-        for(let i = 0; i < allURL.length; i++){
+        console.log("allURL: ", allURL)
+        for (let i = 0; i < allURL.length; i++) {
             pages = await crawlPage(baseURL, allURL[i], pages)
         }
 
         return pages
 
 
-    }else{
+    } else {
         return pages
     }
 
@@ -94,7 +92,7 @@ async function crawlPage  (baseURL, currenURL, pages)  {
 }
 
 module.exports = {
-  normalizeURL,
-  getURLsFromHTML,
-  crawlPage
+    normalizeURL,
+    getURLsFromHTML,
+    crawlPage
 }
