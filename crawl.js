@@ -35,8 +35,8 @@ const getURLsFromHTML = (htmlBody, baseURL) => {
 }*/
 
 async function crawlPage(baseURL, currenURL, pages) {
-//currenURL = normalizeURL(currenURL)
-
+    //currenURL = normalizeURL(currenURL)
+    console.log("value curr normal: ", currenURL)
     if (!currenURL.includes(baseURL)) {
         return;
     }
@@ -65,7 +65,7 @@ async function crawlPage(baseURL, currenURL, pages) {
                 return pages
             }
 
-            if ((fetchPage.header.).includes('text-content')) {
+            if ((fetchPage.header.get('content-type')).includes('text-content')) {
                 console.log("type not valid")
                 return pages
             }
