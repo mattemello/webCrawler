@@ -37,10 +37,12 @@ func searchLink(baseUrl, currentUrl string, count int) {
 			for _, elem := range n.Attr {
 				if elem.Key == "href" {
 					controlledLink := controlLink(elem.Val)
-					if controlledLink[0] == '/' && !linkVisited[controlledLink] {
-						linkVisited[controlledLink] = true
-						searchLink(baseUrl, currentUrl+controlledLink, count-1)
-						return
+					if controlledLink != "" && controlledLink != "/" {
+						if controlledLink[0] == '/' && !linkVisited[controlledLink] {
+							linkVisited[controlledLink] = true
+							searchLink(baseUrl, currentUrl+controlledLink, count-1)
+							return
+						}
 					}
 				}
 			}
@@ -49,6 +51,12 @@ func searchLink(baseUrl, currentUrl string, count int) {
 }
 
 func controlLink(str string) string {
+
 	controlledLink := strings.Split(str, ":")[0]
+
+	if strings.Contains(controlledLink, base) {
+		controlledLink = strings.Replace(base, controlledLink, "", 1)
+	}
+
 	return strings.Split(controlledLink, "?")[0]
 }
