@@ -11,7 +11,7 @@ func NormalizeUrl(defUrl string) string {
 
 	domain := strings.Split(defUrl, "/")
 
-	base = domain[2]
+	base = domain[0] + "//" + domain[2]
 
 	return (domain[0] + "//" + domain[2])
 

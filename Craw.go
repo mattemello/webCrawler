@@ -10,7 +10,7 @@ import (
 var linkVisited = make(map[string]bool)
 
 func StartSearchLink(baseUrl string) {
-	searchLink(baseUrl, baseUrl, numberSearch)
+	searchLink(base, baseUrl, numberSearch)
 }
 
 func searchLink(baseUrl, currentUrl string, count int) {
@@ -40,7 +40,10 @@ func searchLink(baseUrl, currentUrl string, count int) {
 					if controlledLink != "" && controlledLink != "/" {
 						if controlledLink[0] == '/' && !linkVisited[controlledLink] {
 							linkVisited[controlledLink] = true
-							searchLink(baseUrl, currentUrl+controlledLink, count-1)
+							searchLink(baseUrl, baseUrl+controlledLink, count-1)
+							if !Flag.Infinity {
+								return
+							}
 						}
 					}
 				}

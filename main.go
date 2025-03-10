@@ -25,10 +25,15 @@ func main() {
 			if strings.Contains(elem, "/") {
 				link = elem
 			} else if strings.Contains(elem, "-") {
-				switch elem[1] {
-				case 'p':
-					Flag.Page = true
-					break
+				for _, ff := range elem[1:] {
+					switch ff {
+					case 'p':
+						Flag.Page = true
+						break
+					case 'i':
+						Flag.Infinity = true
+						break
+					}
 				}
 			} else if m, err := strconv.Atoi(elem); err == nil {
 				numberSearch = m
@@ -40,12 +45,17 @@ func main() {
 
 	} else {
 		link = args[0]
+	}
+
+	if numberSearch == 0 {
 		numberSearch = 10
 	}
+
 	var baseUrl string
 
 	if Flag.Page {
-		baseUrl = strings.ToLower(link)
+		NormalizeUrl(link)
+		baseUrl = link
 	} else {
 		baseUrl = NormalizeUrl(link)
 	}

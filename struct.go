@@ -1,5 +1,6 @@
 package main
 
 type Flags struct {
-	Page bool
+	Page     bool
+	Infinity bool
 }
