@@ -4,12 +4,15 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 var numberSearch int
+var Flag Flags
 
 func main() {
 	args := os.Args[1:]
+	var link string
 
 	if len(args) < 1 {
 		fmt.Println("Error in the args, you didn't pass enough arguments")
@@ -17,17 +20,35 @@ func main() {
 	}
 
 	if len(args) > 1 {
-		var err error
-		numberSearch, err = strconv.Atoi(args[1])
-		if err != nil {
-			fmt.Println("Number of iteration not valid")
-			os.Exit(1)
+
+		for _, elem := range args {
+			if strings.Contains(elem, "/") {
+				link = elem
+			} else if strings.Contains(elem, "-") {
+				switch elem[1] {
+				case 'p':
+					Flag.Page = true
+					break
+				}
+			} else if m, err := strconv.Atoi(elem); err == nil {
+				numberSearch = m
+			} else {
+				fmt.Println("simbol not valid", elem)
+				os.Exit(1)
+			}
 		}
+
 	} else {
+		link = args[0]
 		numberSearch = 10
 	}
+	var baseUrl string
 
-	baseUrl := NormalizeUrl(args[0])
+	if Flag.Page {
+		baseUrl = strings.ToLower(link)
+	} else {
+		baseUrl = NormalizeUrl(link)
+	}
 
 	StartSearchLink(baseUrl)
 
